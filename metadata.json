@@ -1,0 +1,8 @@
+{
+  "name": "Remix: ApexBank",
+  "description": "Modern mobile banking experience with dashboard, payments, transactions history, and profile.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
