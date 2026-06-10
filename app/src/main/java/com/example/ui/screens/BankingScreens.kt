@@ -631,13 +631,22 @@ fun DashboardScreen(
                                         letterSpacing = 1.sp,
                                         color = Color.White.copy(alpha = 0.4f)
                                     )
-                                    Text(
-                                        text = currentUser?.accountNumber ?: "XXXX-XXXX",
-                                        fontFamily = FontFamily.Monospace,
-                                        fontWeight = FontWeight.Bold,
-                                        fontSize = 13.sp,
-                                        color = Color.White
-                                    )
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                        Text(
+                                            text = currentUser?.accountNumber ?: "XXXX-XXXX",
+                                            fontFamily = FontFamily.Monospace,
+                                            fontWeight = FontWeight.Bold,
+                                            fontSize = 13.sp,
+                                            color = Color.White
+                                        )
+                                        Spacer(modifier = Modifier.width(4.dp))
+                                        Icon(
+                                            imageVector = Icons.Filled.ContentCopy,
+                                            contentDescription = "Copy account number",
+                                            tint = Color.White.copy(alpha = 0.6f),
+                                            modifier = Modifier.size(12.dp)
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -1689,12 +1698,18 @@ fun NotificationAlertItem(
     else MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.12f)
     
     val badgeMarker = if (!notif.isRead) MaterialTheme.colorScheme.primary else Color.Transparent
+    val clipboardManager = LocalClipboardManager.current
+    val context = LocalContext.current
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 6.dp)
-            .clickable { if (!notif.isRead) onMarkAsRead() }
+            .clickable {
+                if (!notif.isRead) onMarkAsRead()
+                clipboardManager.setText(AnnotatedString("${notif.title}\n${notif.message}"))
+                Toast.makeText(context, "Copied Security Alert: ${notif.title}", Toast.LENGTH_SHORT).show()
+            }
             .testTag("alert_ledger_item"),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = cardBackground),
